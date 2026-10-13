@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - Flask MicroApp{% endblock %}
+
+{% block content %}
+<div class="row align-items-center mb-4">
+    <div class="col-md-8">
+        <h1 class="h2 fw-bold text-white mb-1">Panel de Control</h1>
+        <p class="text-secondary mb-0">Aplicación web ligera en Flask lista para empaquetado Docker y despliegue CI/CD.</p>
+    </div>
+    <div class="col-md-4 text-md-end mt-3 mt-md-0">
+        <a href="/items" class="btn btn-primary me-2">
+            <i class="bi bi-table me-1"></i> Explorar Data
+        </a>
+        <a href="/runtime" class="btn btn-outline-light">
+            <i class="bi bi-info-circle me-1"></i> Ver Runtime
+        </a>
+    </div>
+</div>
+
+<!-- Metrics Cards -->
+<div class="row g-3 mb-4">
+    <div class="col-sm-6 col-xl-3">
+        <div class="card p-3 shadow-sm">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <span class="text-secondary small text-uppercase fw-semibold">Total Servicios</span>
+                    <h2 class="h3 fw-bold mb-0 text-white mt-1">{{ metrics.total }}</h2>
+                </div>
+                <div class="bg-primary bg-opacity-25 p-3 rounded-3 text-primary fs-4">
+                    <i class="bi bi-layers"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="card p-3 shadow-sm">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <span class="text-secondary small text-uppercase fw-semibold">Servicios Activos</span>
+                    <h2 class="h3 fw-bold mb-0 text-success mt-1">{{ metrics.active }}</h2>
+                </div>
+                <div class="bg-success bg-opacity-25 p-3 rounded-3 text-success fs-4">
+                    <i class="bi bi-check-circle"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="card p-3 shadow-sm">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <span class="text-secondary small text-uppercase fw-semibold">En Mantenimiento</span>
+                    <h2 class="h3 fw-bold mb-0 text-warning mt-1">{{ metrics.maintenance }}</h2>
+                </div>
+                <div class="bg-warning bg-opacity-25 p-3 rounded-3 text-warning fs-4">
+                    <i class="bi bi-tools"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="card p-3 shadow-sm">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <span class="text-secondary small text-uppercase fw-semibold">Latencia Promedio</span>
+                    <h2 class="h3 fw-bold mb-0 text-info mt-1">{{ metrics.avg_latency }} ms</h2>
+                </div>
+                <div class="bg-info bg-opacity-25 p-3 rounded-3 text-info fs-4">
+                    <i class="bi bi-lightning-charge"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Recent Items Preview -->
+<div class="card shadow-sm">
+    <div class="card-header bg-transparent border-secondary-subtle d-flex justify-content-between align-items-center py-3">
+        <h5 class="card-title mb-0 fw-semibold">
+            <i class="bi bi-clock-history me-2 text-primary"></i>Últimos Servicios Registrados
+        </h5>
+        <a href="/items" class="btn btn-sm btn-outline-secondary">Ver todos ({{ metrics.total }})</a>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+            <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Categoría</th>
+                    <th>Ambiente</th>
+                    <th>Estado</th>
+                    <th>Latencia</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in recent_items %}
+                <tr>
+                    <td class="font-monospace text-secondary">{{ item.id }}</td>
+                    <td class="fw-semibold text-white">{{ item.name }}</td>
+                    <td><span class="badge bg-secondary">{{ item.category }}</span></td>
+                    <td><span class="badge bg-dark border border-secondary">{{ item.environment }}</span></td>
+                    <td>
+                        <span class="badge badge-status-{{ item.status }}">{{ item.status }}</span>
+                    </td>
+                    <td><code>{{ item.latency_ms }} ms</code></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
