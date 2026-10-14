@@ -1,5 +1,5 @@
 name: Deploy in Azure
-run-name: Deploy for {{github.actor}} on {{github.ref_name}}
+run-name: Deploy en Azure v${{ github.run_number }} - by @${{ github.actor }}
 
 on:
   push:
