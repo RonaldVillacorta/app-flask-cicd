@@ -5,6 +5,11 @@ on:
   push:
     branches:
         - main
+    paths-ignore: 
+        - README.md
+        - docs/**
+        - .gitignore
+        - .dockerignore
 
 #env: myregistry.azurecr.io/my-app:v1
 env: 
